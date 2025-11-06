@@ -27,7 +27,7 @@ export default function Header() {
   return (
     <header className="flex flex-row justify-between px-4 py-2 border-b border-border">
       <div className="flex flex-row items-center gap-2">
-        <img src={logo} alt="canvas3d-logo" className="h-4 max-w-full" />
+        <img src={logo} alt="canvas3d-logo" className="h-3.5 max-w-full" />
         <h1>Canvas3D</h1>
       </div>
       <div className="flex flex-row items-center gap-5">
@@ -43,7 +43,10 @@ export default function Header() {
             </div>
           ))}
         </div>
-        <a href="https://github.com/Louise3Fraser/canvas-3d" target="_blank">
+        <a
+          href="https://github.com/Louise3Fraser/3d-canvas.git"
+          target="_blank"
+        >
           <img src={ghLogo} className="w-6 h-6" alt="Github logo" />
         </a>
         <Button content="Export" onClick={handleExport} />

@@ -9,7 +9,7 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import { colors } from "../data/colors";
 import { defaultDimensions } from "../data/defaults";
-import { donut } from "../data/mock-data";
+import { city } from "../data/mock-data";
 import {
   type ModelContentType,
   type ModelItem,
@@ -24,7 +24,7 @@ import {
 import { findStackedPosition } from "../utils/placementUtils";
 
 export const ModelContext = createContext<ModelContentType | undefined>(
-  undefined,
+  undefined
 );
 
 interface ModelProviderProps {
@@ -32,7 +32,7 @@ interface ModelProviderProps {
 }
 
 export function ModelProvider({ children }: ModelProviderProps) {
-  const [model, setModel] = useState<ModelItem>(donut);
+  const [model, setModel] = useState<ModelItem>(city);
   const [selected, setSelected] = useState<string | null>(null);
   const [edit, setEdit] = useState(false);
 
@@ -52,7 +52,7 @@ export function ModelProvider({ children }: ModelProviderProps) {
   const addChild = (
     root: ModelItem,
     id: string,
-    child: ModelItem,
+    child: ModelItem
   ): ModelItem => {
     if (root.id === id) {
       return { ...root, children: [...root.children, child] };
@@ -117,7 +117,7 @@ export function ModelProvider({ children }: ModelProviderProps) {
         model,
         cloned.position[0],
         cloned.position[1],
-        0.2,
+        0.2
       );
       cloned.position = smartPosition;
     }

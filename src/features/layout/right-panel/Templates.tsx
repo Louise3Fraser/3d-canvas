@@ -4,7 +4,7 @@ import { templates } from "../../../data/templates";
 export default function Templates() {
   return (
     <div className="flex flex-col gap-10">
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-1 gap-3">
         {templates.map((template, i) => (
           <TemplateCard
             key={i}

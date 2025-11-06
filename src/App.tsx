@@ -12,7 +12,7 @@ function AppContent() {
       className={`h-screen flex flex-col ${theme} overscroll-contain overflow-auto`}
     >
       <Header />
-      <div className="flex-1 grid grid-cols-[240px_1fr_300px] overscroll-contain overflow-hidden">
+      <div className="flex-1 grid grid-cols-[240px_1fr_280px] overscroll-contain overflow-hidden">
         <Sidebar />
         <Canvas />
         <RightSidebar />

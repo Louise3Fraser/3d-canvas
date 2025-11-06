@@ -16,9 +16,9 @@ export default function TemplateCard({ src, title, model }: TemplateProps) {
         setSelected(null);
         setModel(model);
       }}
-      className="h-full w-full rounded-lg overflow-clip cursor-pointer border hover:opacity-90"
+      className="h-full w-full rounded-xl overflow-clip cursor-pointer border hover:opacity-90"
     >
-      <img src={src} alt={title} className="w-full h-30.5 object-cover" />
+      <img src={src} alt={title} className="w-full h-58.5 object-cover" />
     </button>
   );
 }

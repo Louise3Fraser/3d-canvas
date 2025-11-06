@@ -76,7 +76,7 @@ export default function Edit() {
             type="text"
             value={item.name}
             onChange={(e) => updateItem(item.id, { name: e.target.value })}
-            className="flex-1 px-2 py-1 text-sm bg-white border border-border rounded"
+            className="flex-1 px-2 py-1 text-sm text-grey-500 bg-white border border-border rounded"
           />
         </div>
         <div className="text-sm text-grey">
@@ -96,7 +96,7 @@ export default function Edit() {
             <input
               value={item.name}
               onChange={(e) => updateItem(item.id, { name: e.target.value })}
-              className="flex-1 p-1 text-xs w-27.5 text-center border rounded-sm bg-white focus:outline-none"
+              className="flex-1 p-1 text-grey-500 text-xs w-27.5 text-center border rounded-sm bg-white focus:outline-none"
             />
           </div>
         </div>
@@ -120,7 +120,7 @@ export default function Edit() {
                     e.target.value = item.color;
                   }
                 }}
-                className="w-16.5 px-2 py-1 text-xs font-mono text-center border rounded-sm bg-white focus:outline-none"
+                className="w-16.5 px-2 py-1 text-grey-500 text-xs font-mono text-center border rounded-sm bg-white focus:outline-none"
               />
               <button
                 onClick={() => setShowPicker(!showPicker)}
@@ -183,7 +183,7 @@ export default function Edit() {
                     },
                   });
                 }}
-                className="w-12 p-1 text-xs text-center border rounded-sm bg-white focus:outline-none"
+                className="w-12 p-1 text-grey-500 text-xs text-center border rounded-sm bg-white focus:outline-none"
               />
             </div>
           );
@@ -210,7 +210,7 @@ export default function Edit() {
                   newPosition[idx] = parseFloat(e.target.value) || 0;
                   updateItem(item.id, { position: newPosition });
                 }}
-                className="flex-1 p-1 text-xs w-5 text-center border rounded-sm bg-white focus:outline-none"
+                className="flex-1 p-1 text-grey-500 text-xs w-5 text-center border rounded-sm bg-white focus:outline-none"
               />
             </div>
           </div>
@@ -237,7 +237,7 @@ export default function Edit() {
                   newRotation[idx] = parseFloat(e.target.value) || 0;
                   updateItem(item.id, { rotation: newRotation });
                 }}
-                className="flex-1 p-1 text-xs w-5 text-center border rounded-sm bg-white focus:outline-none"
+                className="flex-1 p-1 text-xs w-5 text-grey-500 text-center border rounded-sm bg-white focus:outline-none"
               />
             </div>
           </div>
