@@ -1,5 +1,11 @@
 # Canvas3D: Model Tree and 3D View
 
+
+
+https://github.com/user-attachments/assets/8b6f57be-24ea-43fb-a217-a5187b25709f
+
+
+
 ## Core Features
 
 - **Add Primitives**: `box`, `sphere`, `cylinder`, `cone`, `torus`, `capsule`
