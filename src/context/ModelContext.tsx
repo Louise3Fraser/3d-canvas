@@ -9,7 +9,7 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import { colors } from "../data/colors";
 import { defaultDimensions } from "../data/defaults";
-import { city } from "../data/mock-data";
+import { donut } from "../data/mock-data";
 import {
   type ModelContentType,
   type ModelItem,
@@ -32,7 +32,7 @@ interface ModelProviderProps {
 }
 
 export function ModelProvider({ children }: ModelProviderProps) {
-  const [model, setModel] = useState<ModelItem>(city);
+  const [model, setModel] = useState<ModelItem>(donut);
   const [selected, setSelected] = useState<string | null>(null);
   const [edit, setEdit] = useState(false);
 
