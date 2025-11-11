@@ -17,13 +17,13 @@ function renderItem(
   selectedId: string | null,
   hoveredId: string | null,
   onSelect: (id: string) => void,
-  onHover: (id: string | null) => void,
+  onHover: (id: string | null) => void
 ): JSX.Element {
   if (node.type === "group") {
     return (
       <group key={node.id}>
         {node.children.map((child) =>
-          renderItem(child, selectedId, hoveredId, onSelect, onHover),
+          renderItem(child, selectedId, hoveredId, onSelect, onHover)
         )}
       </group>
     );
@@ -50,12 +50,15 @@ function Controls() {
   const transformRef = useRef<any>(null);
 
   const mode = modes[modeIndex];
+
   const target = selected ? scene.getObjectByName(selected) : null;
 
   useEffect(() => {
     if (!transformRef.current) return;
     const control = transformRef.current;
+
     control.setMode(mode);
+
     const onDragging = (e: { value: boolean }) => {
       if (orbitRef.current) orbitRef.current.enabled = !e.value;
     };
@@ -137,7 +140,7 @@ export default function Scene() {
             setEdit(true);
             setHoveredId(null);
           },
-          setHoveredId,
+          setHoveredId
         )}
       </group>
       <CameraController orbitControlsRef={orbitRef} />

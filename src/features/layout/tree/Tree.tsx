@@ -42,6 +42,7 @@ export default function Tree() {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [overId, setOverId] = useState<string | null>(null);
   const [offsetLeft, setOffsetLeft] = useState(0);
+
   const indentationWidth = 13;
   const sensors = useSensors(useSensor(PointerSensor));
 
@@ -52,13 +53,13 @@ export default function Tree() {
     const collapsedItems = flattenedTree.reduce<string[]>(
       (acc, { node, id }) =>
         !node.expanded && node.children.length ? [...acc, id] : acc,
-      [],
+      []
     );
 
     // Collapsed groups should render no children:
     const filtered = removeChildrenOf(
       flattenedTree,
-      activeId ? [activeId, ...collapsedItems] : collapsedItems,
+      activeId ? [activeId, ...collapsedItems] : collapsedItems
     );
 
     return filtered.filter((item) => item.depth > 0);
@@ -71,13 +72,13 @@ export default function Tree() {
           activeId,
           overId,
           offsetLeft,
-          indentationWidth,
+          indentationWidth
         )
       : null;
 
   const sortedIds = useMemo(
     () => flattenedItems.map(({ id }) => id),
-    [flattenedItems],
+    [flattenedItems]
   );
 
   const measuring = {
@@ -120,8 +121,8 @@ export default function Tree() {
 
   function handleDragStart({ active: { id: activeId } }: DragStartEvent) {
     setActiveId(String(activeId));
-    setOverId(String(activeId));
-    setSelected(null);
+    setOverId(String(activeId)); // start over self
+    setSelected(null); // deselect current
     document.body.style.setProperty("cursor", "grabbing");
   }
 
@@ -140,9 +141,11 @@ export default function Tree() {
 
     if (projected && over) {
       const { depth, parentId } = projected;
+
       const clonedItems: FlattenedItem[] = JSON.parse(
-        JSON.stringify(flattenTree(model)),
+        JSON.stringify(flattenTree(model))
       );
+
       const overIndex = clonedItems.findIndex(({ id }) => id === over.id);
       const activeIndex = clonedItems.findIndex(({ id }) => id === active.id);
       const activeTreeItem = clonedItems[activeIndex];
@@ -156,6 +159,7 @@ export default function Tree() {
         setModel(newItems[0]);
       }
     }
+
     setSelected(String(active.id));
   }
 

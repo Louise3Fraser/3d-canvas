@@ -245,6 +245,7 @@ export default function Edit() {
       </div>
 
       <SectionHeader title="Advanced" border={true} />
+
       <div className="flex flex-col gap-0">
         <div
           onClick={() => {
@@ -254,7 +255,7 @@ export default function Edit() {
         >
           <Copy className="h-4 w-4 text-main" />
           <p>Duplicate</p>
-        </div>{" "}
+        </div>
         <div
           onClick={() => {
             if (confirm("Delete this object?")) {

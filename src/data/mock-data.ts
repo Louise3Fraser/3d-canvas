@@ -1,7 +1,6 @@
 import { type ModelItem } from "../types/modelTypes";
 
 // Data used for templates:
-
 export const city: ModelItem = {
   id: "root",
   name: "City",

@@ -37,16 +37,22 @@ export function ModelProvider({ children }: ModelProviderProps) {
   const [edit, setEdit] = useState(false);
 
   useEffect(() => {
-    if (selected) {
-      const node = findNode(model, selected);
-      if (node) {
-        setEdit(true);
-      } else {
-        setEdit(false);
-      }
-    } else {
+    if (!selected) {
       setEdit(false);
+      return;
     }
+    const node = findNode(model, selected);
+    setEdit(!!node); // converts any value to a boolean
+    // if (selected) {
+    //   const node = findNode(model, selected);
+    //   if (node) {
+    //     setEdit(true);
+    //   } else {
+    //     setEdit(false);
+    //   }
+    // } else {
+    //   setEdit(false);
+    // }
   }, [selected, model]);
 
   const addChild = (
@@ -133,7 +139,7 @@ export function ModelProvider({ children }: ModelProviderProps) {
   const deleteItem = (id: string) => {
     setModel((prev) => {
       const result = deleteNode(prev, id);
-      return result ?? prev;
+      return result ?? prev; // returns R side value ONLY IF the L side is null or undefined
     });
     setSelected(null);
     setEdit(false);
