@@ -4,7 +4,7 @@ import type { FlattenedItem } from "../types/treeTypes";
 function flatten(
   item: ModelItem,
   parentId: string | null = null,
-  depth = 0,
+  depth = 0
 ): FlattenedItem[] {
   const result: FlattenedItem[] = [
     { id: item.id, node: item, parentId, depth },
@@ -40,7 +40,7 @@ export function getProjection(
   activeId: string,
   overId: string,
   dragOffset: number,
-  indentationWidth: number,
+  indentationWidth: number
 ) {
   const overItemIndex = items.findIndex(({ id }) => id === overId);
   const activeItemIndex = items.findIndex(({ id }) => id === activeId);
@@ -85,7 +85,6 @@ export function getProjection(
       }
     }
 
-    // If no valid group parent found, keep at same level as previous item
     if (!parentId && previousItem) {
       depth = previousItem.depth;
       parentId = previousItem.parentId;
