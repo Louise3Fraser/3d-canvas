@@ -9,7 +9,7 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import { colors } from "../data/colors";
 import { defaultDimensions } from "../data/defaults";
-import { donut } from "../data/mock-data";
+import { BasicScene } from "../data/mock-data";
 import {
   type ModelContentType,
   type ModelItem,
@@ -32,7 +32,7 @@ interface ModelProviderProps {
 }
 
 export function ModelProvider({ children }: ModelProviderProps) {
-  const [model, setModel] = useState<ModelItem>(donut);
+  const [model, setModel] = useState<ModelItem>(BasicScene);
   const [selected, setSelected] = useState<string | null>(null);
   const [edit, setEdit] = useState(false);
 
@@ -42,17 +42,7 @@ export function ModelProvider({ children }: ModelProviderProps) {
       return;
     }
     const node = findNode(model, selected);
-    setEdit(!!node); // converts any value to a boolean
-    // if (selected) {
-    //   const node = findNode(model, selected);
-    //   if (node) {
-    //     setEdit(true);
-    //   } else {
-    //     setEdit(false);
-    //   }
-    // } else {
-    //   setEdit(false);
-    // }
+    setEdit(!!node);
   }, [selected, model]);
 
   const addChild = (
@@ -139,7 +129,7 @@ export function ModelProvider({ children }: ModelProviderProps) {
   const deleteItem = (id: string) => {
     setModel((prev) => {
       const result = deleteNode(prev, id);
-      return result ?? prev; // returns R side value ONLY IF the L side is null or undefined
+      return result ?? prev;
     });
     setSelected(null);
     setEdit(false);
