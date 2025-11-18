@@ -9,9 +9,11 @@ import {
   Grid2X2Check,
   Grid2x2X,
   RectangleVertical,
+  Redo,
   Shapes,
   Torus,
   Trash,
+  Undo,
 } from "lucide-react";
 import Dropdown from "../../components/Dropdown";
 import Toggle from "../../components/Toggle";
@@ -42,7 +44,8 @@ const PRIMITIVES = Object.keys(ICONS) as PrimitiveType[];
 
 export default function Toolbar() {
   const { setModeIndex, modeIndex, showGrid, setShowGrid, theme } = useUI();
-  const { addPrimitive, deleteAll, addGroup } = useModel();
+  const { addPrimitive, deleteAll, addGroup, undo, redo, canUndo, canRedo } =
+    useModel();
   const [shape, setShape] = useState<PrimitiveType | "">("");
 
   const handleRecenter = () => {
@@ -79,6 +82,28 @@ export default function Toolbar() {
           className="w-5 h-5 cursor-pointer text-main"
         />
       </Tooltip>
+      <div className="w-px h-6 bg-border" />
+      <Tooltip text="Undo">
+        <Undo
+          onClick={canUndo ? undo : undefined}
+          className={`w-5 h-5 ${
+            canUndo
+              ? "text-main cursor-pointer"
+              : "text-muted opacity-50 cursor-not-allowed"
+          }`}
+        />
+      </Tooltip>
+      <Tooltip text="Redo">
+        <Redo
+          onClick={canRedo ? redo : undefined}
+          className={`w-5 h-5 ${
+            canRedo
+              ? "text-main cursor-pointer"
+              : "text-muted opacity-50 cursor-not-allowed"
+          }`}
+        />
+      </Tooltip>
+      <div className="w-px h-6 bg-border" />
       <Tooltip text="Grid visibility">
         {showGrid ? (
           <Grid2X2Check

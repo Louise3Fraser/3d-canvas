@@ -66,4 +66,8 @@ export interface ModelContentType {
   exportModel: () => ModelItem;
   duplicate: (id: string) => void;
   addGroup: () => void;
+  undo: () => void;
+  redo: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
 }
