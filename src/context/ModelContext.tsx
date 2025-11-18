@@ -4,6 +4,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -31,10 +32,112 @@ interface ModelProviderProps {
   children: ReactNode;
 }
 
+interface HistoryState {
+  past: ModelItem[];
+  present: ModelItem;
+  future: ModelItem[];
+}
+
+const MAX_HISTORY_SIZE = 50;
+
 export function ModelProvider({ children }: ModelProviderProps) {
-  const [model, setModel] = useState<ModelItem>(BasicScene);
+  const [historyState, setHistoryState] = useState<HistoryState>({
+    past: [],
+    present: BasicScene,
+    future: [],
+  });
   const [selected, setSelected] = useState<string | null>(null);
   const [edit, setEdit] = useState(false);
+  const isUndoRedoRef = useRef(false);
+
+  const model = historyState.present;
+
+  const deepClone = useCallback((item: ModelItem): ModelItem => {
+    return JSON.parse(JSON.stringify(item));
+  }, []);
+
+  const undo = useCallback(() => {
+    setHistoryState((prev) => {
+      if (prev.past.length === 0) {
+        return prev;
+      }
+
+      isUndoRedoRef.current = true;
+      const previous = prev.past[prev.past.length - 1];
+      const newPast = prev.past.slice(0, -1);
+      const newFuture = [deepClone(prev.present), ...prev.future];
+
+      return {
+        past: newPast,
+        present: deepClone(previous),
+        future: newFuture,
+      };
+    });
+  }, [deepClone]);
+
+  const redo = useCallback(() => {
+    setHistoryState((prev) => {
+      if (prev.future.length === 0) {
+        return prev;
+      }
+
+      isUndoRedoRef.current = true;
+      const next = prev.future[0];
+      const newPast = [...prev.past, deepClone(prev.present)];
+      const newFuture = prev.future.slice(1);
+
+      return {
+        past: newPast,
+        present: deepClone(next),
+        future: newFuture,
+      };
+    });
+  }, [deepClone]);
+
+  const canUndo = historyState.past.length > 0;
+  const canRedo = historyState.future.length > 0;
+
+  const setModel = useCallback(
+    (newModel: ModelItem | ((prev: ModelItem) => ModelItem)) => {
+      if (isUndoRedoRef.current) {
+        isUndoRedoRef.current = false;
+
+        if (typeof newModel === "function") {
+          setHistoryState((prev) => ({
+            ...prev,
+            present: newModel(prev.present),
+          }));
+        } else {
+          setHistoryState((prev) => ({
+            ...prev,
+            present: deepClone(newModel),
+          }));
+        }
+        return;
+      }
+
+      setHistoryState((prev) => {
+        const updatedModel =
+          typeof newModel === "function"
+            ? newModel(prev.present)
+            : deepClone(newModel);
+
+        const newPast = [...prev.past, deepClone(prev.present)];
+
+        const limitedPast =
+          newPast.length > MAX_HISTORY_SIZE - 1
+            ? newPast.slice(-(MAX_HISTORY_SIZE - 1))
+            : newPast;
+
+        return {
+          past: limitedPast,
+          present: updatedModel,
+          future: [],
+        };
+      });
+    },
+    [deepClone]
+  );
 
   useEffect(() => {
     if (!selected) {
@@ -96,14 +199,14 @@ export function ModelProvider({ children }: ModelProviderProps) {
     const newId = uuidv4();
     const newName = `${node.name} (copy)`;
 
-    const deepClone = (item: ModelItem): ModelItem => ({
+    const deepCloneItem = (item: ModelItem): ModelItem => ({
       ...item,
       id: uuidv4(),
       name: item.name.includes("(copy)") ? item.name : `${item.name} (copy)`,
-      children: item.children.map(deepClone),
+      children: item.children.map(deepCloneItem),
     });
 
-    const cloned = deepClone(node);
+    const cloned = deepCloneItem(node);
     cloned.id = newId;
     cloned.name = newName;
 
@@ -136,13 +239,14 @@ export function ModelProvider({ children }: ModelProviderProps) {
   };
 
   const deleteAll = () => {
-    setModel({
+    const emptyModel: ModelItem = {
       id: "root",
       name: "Root",
       type: "group",
       expanded: true,
       children: [],
-    });
+    };
+    setModel(emptyModel);
     setSelected(null);
     setEdit(false);
   };
@@ -166,7 +270,11 @@ export function ModelProvider({ children }: ModelProviderProps) {
   };
 
   const toggleItem = (id: string) => {
-    setModel((prev) => toggleExpand(prev, id));
+    setModel((prev) => {
+      const updated = toggleExpand(prev, id);
+      // Don't save expand/collapse to history as it's a UI state
+      return updated;
+    });
   };
 
   const exportModel = useCallback(() => {
@@ -191,6 +299,10 @@ export function ModelProvider({ children }: ModelProviderProps) {
         exportModel,
         duplicate,
         addGroup,
+        undo,
+        redo,
+        canUndo,
+        canRedo,
       }}
     >
       {children}
